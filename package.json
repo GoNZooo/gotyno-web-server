@@ -1,0 +1,22 @@
+{
+  "name": "gotyno-web-server",
+  "scripts": {
+    "build:types": "gotyno-hs --typescript src --python clients/python/src gotyno/utilities.gotyno gotyno/notifications.gotyno",
+    "build:types:watch": "gotyno-hs --watch --typescript src --py clients/python/src gotyno/utilities.gotyno gotyno/notifications.gotyno"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.3.3",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "simple-validation-tools": "^1.4.5"
+  }
+}

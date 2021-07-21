@@ -1,0 +1,61 @@
+import utilities
+
+struct NotifyUserPayload {
+    id: U32
+    message: String
+}
+
+struct Notification {
+    id: U32
+    message: String
+    seen: Boolean
+}
+
+struct AddNotificationError {
+    userId: U32
+    notification: Notification
+    error: String
+}
+
+struct RemoveNotificationError {
+    userId: U32
+    notificationId: U32
+    error: String
+}
+
+struct RemoveNotificationResult {
+    remainingNotifications: []Notification
+    removedNotification: Notification
+}
+
+struct RemoveNotificationPayload {
+    userId: U32
+    id: U32
+}
+
+union NotificationCommand {
+    GetNotifications: U32
+    NotifyUser: NotifyUserPayload
+    RemoveNotification: RemoveNotificationPayload
+    ClearNotifications: U32
+    ClearAllNotifications
+}
+
+union NotificationCommandSuccess {
+    Notifications: []Notification
+    NotificationAdded: NotifyUserPayload
+    NotificationRemoved: RemoveNotificationResult
+    NotificationsCleared: U32
+    AllNotificationsCleared
+}
+
+union NotificationCommandFailure {
+    NotificationNotRemoved: RemoveNotificationError
+    NotificationNotAdded: AddNotificationError
+    InvalidCommand: String
+}
+
+union NotificationCommandResult {
+    CommandSuccess: NotificationCommandSuccess
+    CommandFailure: NotificationCommandFailure
+}

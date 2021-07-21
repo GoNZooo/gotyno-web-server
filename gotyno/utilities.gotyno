@@ -1,0 +1,9 @@
+union Maybe <T>{
+    Nothing
+    Just: T
+}
+
+union Either <L, R>{
+    Left: L
+    Right: R
+}

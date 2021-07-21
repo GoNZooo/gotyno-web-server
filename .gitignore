@@ -1,0 +1,6 @@
+**/__pycache__
+**/node_modules
+.vscode
+*.log
+clients/python/.environment/
+**/.mypy_cache
