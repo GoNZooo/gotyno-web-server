@@ -4,158 +4,158 @@ open Thoth.Json.Net
 
 type NotifyUserPayload =
     {
-        id: uint32
-        message: string
+        Id: uint32
+        Message: string
     }
 
     static member Decoder: Decoder<NotifyUserPayload> =
         Decode.object (fun get ->
             {
-                id = get.Required.Field "id" Decode.uint32
-                message = get.Required.Field "message" Decode.string
+                Id = get.Required.Field "id" Decode.uint32
+                Message = get.Required.Field "message" Decode.string
             }
         )
 
     static member Encoder value =
         Encode.object
             [
-                "id", Encode.uint32 value.id
-                "message", Encode.string value.message
+                "id", Encode.uint32 value.Id
+                "message", Encode.string value.Message
             ]
 
 type Notification =
     {
-        id: uint32
-        message: string
-        seen: bool
+        Id: uint32
+        Message: string
+        Seen: bool
     }
 
     static member Decoder: Decoder<Notification> =
         Decode.object (fun get ->
             {
-                id = get.Required.Field "id" Decode.uint32
-                message = get.Required.Field "message" Decode.string
-                seen = get.Required.Field "seen" Decode.bool
+                Id = get.Required.Field "id" Decode.uint32
+                Message = get.Required.Field "message" Decode.string
+                Seen = get.Required.Field "seen" Decode.bool
             }
         )
 
     static member Encoder value =
         Encode.object
             [
-                "id", Encode.uint32 value.id
-                "message", Encode.string value.message
-                "seen", Encode.bool value.seen
+                "id", Encode.uint32 value.Id
+                "message", Encode.string value.Message
+                "seen", Encode.bool value.Seen
             ]
 
 type NotificationAddedPayload =
     {
-        userId: uint32
-        notification: Notification
+        UserId: uint32
+        Notification: Notification
     }
 
     static member Decoder: Decoder<NotificationAddedPayload> =
         Decode.object (fun get ->
             {
-                userId = get.Required.Field "userId" Decode.uint32
-                notification = get.Required.Field "notification" Notification.Decoder
+                UserId = get.Required.Field "userId" Decode.uint32
+                Notification = get.Required.Field "notification" Notification.Decoder
             }
         )
 
     static member Encoder value =
         Encode.object
             [
-                "userId", Encode.uint32 value.userId
-                "notification", Notification.Encoder value.notification
+                "userId", Encode.uint32 value.UserId
+                "notification", Notification.Encoder value.Notification
             ]
 
 type AddNotificationError =
     {
-        userId: uint32
-        notification: Notification
-        error: string
+        UserId: uint32
+        Notification: Notification
+        Error: string
     }
 
     static member Decoder: Decoder<AddNotificationError> =
         Decode.object (fun get ->
             {
-                userId = get.Required.Field "userId" Decode.uint32
-                notification = get.Required.Field "notification" Notification.Decoder
-                error = get.Required.Field "error" Decode.string
+                UserId = get.Required.Field "userId" Decode.uint32
+                Notification = get.Required.Field "notification" Notification.Decoder
+                Error = get.Required.Field "error" Decode.string
             }
         )
 
     static member Encoder value =
         Encode.object
             [
-                "userId", Encode.uint32 value.userId
-                "notification", Notification.Encoder value.notification
-                "error", Encode.string value.error
+                "userId", Encode.uint32 value.UserId
+                "notification", Notification.Encoder value.Notification
+                "error", Encode.string value.Error
             ]
 
 type RemoveNotificationError =
     {
-        userId: uint32
-        notificationId: uint32
-        error: string
+        UserId: uint32
+        NotificationId: uint32
+        Error: string
     }
 
     static member Decoder: Decoder<RemoveNotificationError> =
         Decode.object (fun get ->
             {
-                userId = get.Required.Field "userId" Decode.uint32
-                notificationId = get.Required.Field "notificationId" Decode.uint32
-                error = get.Required.Field "error" Decode.string
+                UserId = get.Required.Field "userId" Decode.uint32
+                NotificationId = get.Required.Field "notificationId" Decode.uint32
+                Error = get.Required.Field "error" Decode.string
             }
         )
 
     static member Encoder value =
         Encode.object
             [
-                "userId", Encode.uint32 value.userId
-                "notificationId", Encode.uint32 value.notificationId
-                "error", Encode.string value.error
+                "userId", Encode.uint32 value.UserId
+                "notificationId", Encode.uint32 value.NotificationId
+                "error", Encode.string value.Error
             ]
 
 type RemoveNotificationResult =
     {
-        remainingNotifications: list<Notification>
-        removedNotification: Notification
+        RemainingNotifications: list<Notification>
+        RemovedNotification: Notification
     }
 
     static member Decoder: Decoder<RemoveNotificationResult> =
         Decode.object (fun get ->
             {
-                remainingNotifications = get.Required.Field "remainingNotifications" (Decode.list Notification.Decoder)
-                removedNotification = get.Required.Field "removedNotification" Notification.Decoder
+                RemainingNotifications = get.Required.Field "remainingNotifications" (Decode.list Notification.Decoder)
+                RemovedNotification = get.Required.Field "removedNotification" Notification.Decoder
             }
         )
 
     static member Encoder value =
         Encode.object
             [
-                "remainingNotifications", GotynoCoders.encodeList Notification.Encoder value.remainingNotifications
-                "removedNotification", Notification.Encoder value.removedNotification
+                "remainingNotifications", GotynoCoders.encodeList Notification.Encoder value.RemainingNotifications
+                "removedNotification", Notification.Encoder value.RemovedNotification
             ]
 
 type RemoveNotificationPayload =
     {
-        userId: uint32
-        id: uint32
+        UserId: uint32
+        Id: uint32
     }
 
     static member Decoder: Decoder<RemoveNotificationPayload> =
         Decode.object (fun get ->
             {
-                userId = get.Required.Field "userId" Decode.uint32
-                id = get.Required.Field "id" Decode.uint32
+                UserId = get.Required.Field "userId" Decode.uint32
+                Id = get.Required.Field "id" Decode.uint32
             }
         )
 
     static member Encoder value =
         Encode.object
             [
-                "userId", Encode.uint32 value.userId
-                "id", Encode.uint32 value.id
+                "userId", Encode.uint32 value.UserId
+                "id", Encode.uint32 value.Id
             ]
 
 type NotificationCommand =
