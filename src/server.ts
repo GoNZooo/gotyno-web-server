@@ -87,7 +87,7 @@ function executeCommand(command: NotificationCommand): NotificationCommandResult
       const addResult = addNotification(userId, notification);
       switch (addResult.type) {
         case EitherTag.Right: {
-          return CommandSuccess(NotificationAdded(command.data));
+          return CommandSuccess(NotificationAdded({ userId, notification }));
         }
 
         case EitherTag.Left: {

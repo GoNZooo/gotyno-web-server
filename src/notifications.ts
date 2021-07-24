@@ -29,6 +29,19 @@ export function validateNotification(value: unknown): svt.ValidationResult<Notif
     return svt.validate<Notification>(value, {id: svt.validateNumber, message: svt.validateString, seen: svt.validateBoolean});
 }
 
+export type NotificationAddedPayload = {
+    userId: number;
+    notification: Notification;
+};
+
+export function isNotificationAddedPayload(value: unknown): value is NotificationAddedPayload {
+    return svt.isInterface<NotificationAddedPayload>(value, {userId: svt.isNumber, notification: isNotification});
+}
+
+export function validateNotificationAddedPayload(value: unknown): svt.ValidationResult<NotificationAddedPayload> {
+    return svt.validate<NotificationAddedPayload>(value, {userId: svt.validateNumber, notification: validateNotification});
+}
+
 export type AddNotificationError = {
     userId: number;
     notification: Notification;
@@ -202,7 +215,7 @@ export type Notifications = {
 
 export type NotificationAdded = {
     type: NotificationCommandSuccessTag.NotificationAdded;
-    data: NotifyUserPayload;
+    data: NotificationAddedPayload;
 };
 
 export type NotificationRemoved = {
@@ -223,7 +236,7 @@ export function Notifications(data: Notification[]): Notifications {
     return {type: NotificationCommandSuccessTag.Notifications, data};
 }
 
-export function NotificationAdded(data: NotifyUserPayload): NotificationAdded {
+export function NotificationAdded(data: NotificationAddedPayload): NotificationAdded {
     return {type: NotificationCommandSuccessTag.NotificationAdded, data};
 }
 
@@ -248,7 +261,7 @@ export function isNotifications(value: unknown): value is Notifications {
 }
 
 export function isNotificationAdded(value: unknown): value is NotificationAdded {
-    return svt.isInterface<NotificationAdded>(value, {type: NotificationCommandSuccessTag.NotificationAdded, data: isNotifyUserPayload});
+    return svt.isInterface<NotificationAdded>(value, {type: NotificationCommandSuccessTag.NotificationAdded, data: isNotificationAddedPayload});
 }
 
 export function isNotificationRemoved(value: unknown): value is NotificationRemoved {
@@ -272,7 +285,7 @@ export function validateNotifications(value: unknown): svt.ValidationResult<Noti
 }
 
 export function validateNotificationAdded(value: unknown): svt.ValidationResult<NotificationAdded> {
-    return svt.validate<NotificationAdded>(value, {type: NotificationCommandSuccessTag.NotificationAdded, data: validateNotifyUserPayload});
+    return svt.validate<NotificationAdded>(value, {type: NotificationCommandSuccessTag.NotificationAdded, data: validateNotificationAddedPayload});
 }
 
 export function validateNotificationRemoved(value: unknown): svt.ValidationResult<NotificationRemoved> {

@@ -11,6 +11,11 @@ struct Notification {
     seen: Boolean
 }
 
+struct NotificationAddedPayload {
+    userId: U32
+    notification: Notification
+}
+
 struct AddNotificationError {
     userId: U32
     notification: Notification
@@ -43,7 +48,7 @@ union NotificationCommand {
 
 union NotificationCommandSuccess {
     Notifications: []Notification
-    NotificationAdded: NotifyUserPayload
+    NotificationAdded: NotificationAddedPayload
     NotificationRemoved: RemoveNotificationResult
     NotificationsCleared: U32
     AllNotificationsCleared

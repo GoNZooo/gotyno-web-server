@@ -6,7 +6,6 @@ from gotyno_validation import encoding
 
 from . import utilities
 
-
 @dataclass(frozen=True)
 class NotifyUserPayload:
     id: int
@@ -25,7 +24,6 @@ class NotifyUserPayload:
 
     def encode(self) -> str:
         return json.dumps(self.to_json())
-
 
 @dataclass(frozen=True)
 class Notification:
@@ -47,6 +45,24 @@ class Notification:
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
+@dataclass(frozen=True)
+class NotificationAddedPayload:
+    userId: int
+    notification: Notification
+
+    @staticmethod
+    def validate(value: validation.Unknown) -> validation.ValidationResult['NotificationAddedPayload']:
+        return validation.validate_interface(value, {'userId': validation.validate_int, 'notification': Notification.validate}, NotificationAddedPayload)
+
+    @staticmethod
+    def decode(string: typing.Union[str, bytes]) -> validation.ValidationResult['NotificationAddedPayload']:
+        return validation.validate_from_string(string, NotificationAddedPayload.validate)
+
+    def to_json(self) -> typing.Dict[str, typing.Any]:
+        return {'userId': self.userId, 'notification': Notification.to_json(self.notification)}
+
+    def encode(self) -> str:
+        return json.dumps(self.to_json())
 
 @dataclass(frozen=True)
 class AddNotificationError:
@@ -68,7 +84,6 @@ class AddNotificationError:
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 @dataclass(frozen=True)
 class RemoveNotificationError:
     userId: int
@@ -89,7 +104,6 @@ class RemoveNotificationError:
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 @dataclass(frozen=True)
 class RemoveNotificationResult:
     remainingNotifications: typing.List[Notification]
@@ -108,7 +122,6 @@ class RemoveNotificationResult:
 
     def encode(self) -> str:
         return json.dumps(self.to_json())
-
 
 @dataclass(frozen=True)
 class RemoveNotificationPayload:
@@ -129,7 +142,6 @@ class RemoveNotificationPayload:
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 class NotificationCommand:
     @staticmethod
     def validate(value: validation.Unknown) -> validation.ValidationResult['NotificationCommand']:
@@ -140,13 +152,10 @@ class NotificationCommand:
         return validation.validate_from_string(string, NotificationCommand.validate)
 
     def to_json(self) -> typing.Dict[str, typing.Any]:
-        raise NotImplementedError(
-            '`to_json` is not implemented for base class `NotificationCommand`')
+        raise NotImplementedError('`to_json` is not implemented for base class `NotificationCommand`')
 
     def encode(self) -> str:
-        raise NotImplementedError(
-            '`encode` is not implemented for base class `NotificationCommand`')
-
+        raise NotImplementedError('`encode` is not implemented for base class `NotificationCommand`')
 
 @dataclass(frozen=True)
 class GetNotifications(NotificationCommand):
@@ -166,7 +175,6 @@ class GetNotifications(NotificationCommand):
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 @dataclass(frozen=True)
 class NotifyUser(NotificationCommand):
     data: NotifyUserPayload
@@ -184,7 +192,6 @@ class NotifyUser(NotificationCommand):
 
     def encode(self) -> str:
         return json.dumps(self.to_json())
-
 
 @dataclass(frozen=True)
 class RemoveNotification(NotificationCommand):
@@ -204,7 +211,6 @@ class RemoveNotification(NotificationCommand):
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 @dataclass(frozen=True)
 class ClearNotifications(NotificationCommand):
     data: int
@@ -223,7 +229,6 @@ class ClearNotifications(NotificationCommand):
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 @dataclass(frozen=True)
 class ClearAllNotifications(NotificationCommand):
     @staticmethod
@@ -240,7 +245,6 @@ class ClearAllNotifications(NotificationCommand):
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 class NotificationCommandSuccess:
     @staticmethod
     def validate(value: validation.Unknown) -> validation.ValidationResult['NotificationCommandSuccess']:
@@ -251,13 +255,10 @@ class NotificationCommandSuccess:
         return validation.validate_from_string(string, NotificationCommandSuccess.validate)
 
     def to_json(self) -> typing.Dict[str, typing.Any]:
-        raise NotImplementedError(
-            '`to_json` is not implemented for base class `NotificationCommandSuccess`')
+        raise NotImplementedError('`to_json` is not implemented for base class `NotificationCommandSuccess`')
 
     def encode(self) -> str:
-        raise NotImplementedError(
-            '`encode` is not implemented for base class `NotificationCommandSuccess`')
-
+        raise NotImplementedError('`encode` is not implemented for base class `NotificationCommandSuccess`')
 
 @dataclass(frozen=True)
 class Notifications(NotificationCommandSuccess):
@@ -277,14 +278,13 @@ class Notifications(NotificationCommandSuccess):
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 @dataclass(frozen=True)
 class NotificationAdded(NotificationCommandSuccess):
-    data: NotifyUserPayload
+    data: NotificationAddedPayload
 
     @staticmethod
     def validate(value: validation.Unknown) -> validation.ValidationResult['NotificationAdded']:
-        return validation.validate_with_type_tag(value, 'type', 'NotificationAdded', {'data': NotifyUserPayload.validate}, NotificationAdded)
+        return validation.validate_with_type_tag(value, 'type', 'NotificationAdded', {'data': NotificationAddedPayload.validate}, NotificationAdded)
 
     @staticmethod
     def decode(string: typing.Union[str, bytes]) -> validation.ValidationResult['NotificationAdded']:
@@ -295,7 +295,6 @@ class NotificationAdded(NotificationCommandSuccess):
 
     def encode(self) -> str:
         return json.dumps(self.to_json())
-
 
 @dataclass(frozen=True)
 class NotificationRemoved(NotificationCommandSuccess):
@@ -315,7 +314,6 @@ class NotificationRemoved(NotificationCommandSuccess):
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 @dataclass(frozen=True)
 class NotificationsCleared(NotificationCommandSuccess):
     data: int
@@ -334,7 +332,6 @@ class NotificationsCleared(NotificationCommandSuccess):
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 @dataclass(frozen=True)
 class AllNotificationsCleared(NotificationCommandSuccess):
     @staticmethod
@@ -351,7 +348,6 @@ class AllNotificationsCleared(NotificationCommandSuccess):
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 class NotificationCommandFailure:
     @staticmethod
     def validate(value: validation.Unknown) -> validation.ValidationResult['NotificationCommandFailure']:
@@ -362,13 +358,10 @@ class NotificationCommandFailure:
         return validation.validate_from_string(string, NotificationCommandFailure.validate)
 
     def to_json(self) -> typing.Dict[str, typing.Any]:
-        raise NotImplementedError(
-            '`to_json` is not implemented for base class `NotificationCommandFailure`')
+        raise NotImplementedError('`to_json` is not implemented for base class `NotificationCommandFailure`')
 
     def encode(self) -> str:
-        raise NotImplementedError(
-            '`encode` is not implemented for base class `NotificationCommandFailure`')
-
+        raise NotImplementedError('`encode` is not implemented for base class `NotificationCommandFailure`')
 
 @dataclass(frozen=True)
 class NotificationNotRemoved(NotificationCommandFailure):
@@ -388,7 +381,6 @@ class NotificationNotRemoved(NotificationCommandFailure):
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 @dataclass(frozen=True)
 class NotificationNotAdded(NotificationCommandFailure):
     data: AddNotificationError
@@ -406,7 +398,6 @@ class NotificationNotAdded(NotificationCommandFailure):
 
     def encode(self) -> str:
         return json.dumps(self.to_json())
-
 
 @dataclass(frozen=True)
 class InvalidCommand(NotificationCommandFailure):
@@ -426,7 +417,6 @@ class InvalidCommand(NotificationCommandFailure):
     def encode(self) -> str:
         return json.dumps(self.to_json())
 
-
 class NotificationCommandResult:
     @staticmethod
     def validate(value: validation.Unknown) -> validation.ValidationResult['NotificationCommandResult']:
@@ -437,13 +427,10 @@ class NotificationCommandResult:
         return validation.validate_from_string(string, NotificationCommandResult.validate)
 
     def to_json(self) -> typing.Dict[str, typing.Any]:
-        raise NotImplementedError(
-            '`to_json` is not implemented for base class `NotificationCommandResult`')
+        raise NotImplementedError('`to_json` is not implemented for base class `NotificationCommandResult`')
 
     def encode(self) -> str:
-        raise NotImplementedError(
-            '`encode` is not implemented for base class `NotificationCommandResult`')
-
+        raise NotImplementedError('`encode` is not implemented for base class `NotificationCommandResult`')
 
 @dataclass(frozen=True)
 class CommandSuccess(NotificationCommandResult):
@@ -462,7 +449,6 @@ class CommandSuccess(NotificationCommandResult):
 
     def encode(self) -> str:
         return json.dumps(self.to_json())
-
 
 @dataclass(frozen=True)
 class CommandFailure(NotificationCommandResult):
