@@ -1,8 +1,8 @@
 {
   "name": "gotyno-web-server",
   "scripts": {
-    "build:types": "gotyno-hs --typescript src --python clients/python/src gotyno/utilities.gotyno gotyno/notifications.gotyno",
-    "build:types:watch": "gotyno-hs --watch --typescript src --py clients/python/src gotyno/utilities.gotyno gotyno/notifications.gotyno"
+    "build:types": "gotyno-hs --typescript src --python clients/python/src --fsharp clients/fsharp/GotynoClient gotyno/utilities.gotyno gotyno/notifications.gotyno",
+    "build:types:watch": "gotyno-hs --watch --typescript src --py clients/python/src --fsharp clients/fsharp/GotynoClient gotyno/utilities.gotyno gotyno/notifications.gotyno"
   },
   "version": "1.0.0",
   "main": "index.js",
