@@ -40,12 +40,12 @@ let main argv =
     assert notificationsForUserZero.IsEmpty
 
     let addedNotification =
-        executeCommand (NotifyUser {id = 0u; message = "Hello"})
+        executeCommand (NotifyUser {Id = 0u; Message = "Hello"})
           (function
           | NotificationAdded n -> n
           | r -> failwith ("Unexpected response: " + r.ToString()))
-    assert (addedNotification.userId = 0u)
-    assert (addedNotification.notification.message = "Hello")
+    assert (addedNotification.UserId = 0u)
+    assert (addedNotification.Notification.Message = "Hello")
 
     let notificationsForUserZero =
         executeCommand (GetNotifications 0u)
@@ -53,12 +53,12 @@ let main argv =
           | Notifications notifications -> notifications
           | r -> failwith ("Unexpected response: " + r.ToString()))
     assert (notificationsForUserZero.Length = 1)
-    assert (notificationsForUserZero.[0].message = "Hello")
-    assert (not notificationsForUserZero.[0].seen)
+    assert (notificationsForUserZero.[0].Message = "Hello")
+    assert (not notificationsForUserZero.[0].Seen)
 
     let oneToFive = seq {1..5}
     let notificationsToAdd =
-          oneToFive |> Seq.map (fun i -> {id = 0u; message = sprintf "Hello %d" i}) |> Seq.toList
+          oneToFive |> Seq.map (fun i -> {Id = 0u; Message = sprintf "Hello %d" i}) |> Seq.toList
     executeCommand ClearAllNotifications
       (function
       | AllNotificationsCleared -> ()
@@ -67,7 +67,7 @@ let main argv =
       List.map (fun n ->
                   executeCommand (NotifyUser n)
                     (function
-                    | NotificationAdded {notification = {id = id}} -> id
+                    | NotificationAdded {Notification = {Id = id}} -> id
                     | r -> failwith ("Unexpected response: " + r.ToString()))
                )
                notificationsToAdd
@@ -80,9 +80,9 @@ let main argv =
     assert (notificationsForUserZero.Length = 5)
 
     for id in idsToRemove do
-        executeCommand (RemoveNotification {userId = 0u; id = id})
+        executeCommand (RemoveNotification {UserId = 0u; Id = id})
           (function
-          | NotificationRemoved {removedNotification = {id = removedId}} when removedId = id -> ()
+          | NotificationRemoved {RemovedNotification = {Id = removedId}} when removedId = id -> ()
           | NotificationRemoved _ -> failwith "Removed ID does not match given Id"
           | r -> failwith ("Unexpected response: " + r.ToString()))
 
