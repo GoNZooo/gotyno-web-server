@@ -20,8 +20,8 @@ let executeCommand command successAccessor =
         |> Decode.fromString NotificationCommandResult.Decoder 
 
     match response with
-    | Ok(CommandSuccess(r)) -> successAccessor r
-    | Ok(CommandFailure(e)) -> failwith (e.ToString())
+    | Ok (CommandSuccess success) -> successAccessor success
+    | Ok (CommandFailure e)  -> failwith (e.ToString())
     | Error e -> failwith e
 
 
@@ -91,6 +91,6 @@ let main argv =
           (function
           | Notifications notifications -> notifications
           | r -> failwith ("Unexpected response: " + r.ToString()))
-    assert (notificationsForUserZero.IsEmpty)
+    assert notificationsForUserZero.IsEmpty
 
     0 // return an integer exit code
