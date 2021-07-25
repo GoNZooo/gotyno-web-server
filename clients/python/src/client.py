@@ -1,4 +1,6 @@
-from typing import ClassVar, List, Type, TypeVar, cast
+from datetime import datetime, timedelta
+from . import utilities
+from typing import List, Type, TypeVar, cast
 from . import notifications
 from gotyno_validation import validation as v
 import requests
@@ -47,7 +49,7 @@ def test():
     assert notifications_for_user_zero.data.data == []
 
     notify_user = notifications.NotifyUser(
-        notifications.NotifyUserPayload(0, "Hello!"))
+        notifications.NotifyUserPayload(0, "Hello!", utilities.Nothing()))
     add_result = execute_request(notify_user)
     added = assert_successful(add_result, notifications.NotificationAdded)
     assert added.data.userId == 0
@@ -62,9 +64,11 @@ def test():
     assert notifications_for_user_zero.data.data[0].seen == False
 
     notifications_to_add: List[notifications.NotifyUserPayload] = []
+    soon = int((datetime.utcnow() + timedelta(seconds=10)
+                ).timestamp() * 1_000_000)
     for i in range(1, 5):
         notifications_to_add.append(
-            notifications.NotifyUserPayload(0, f"Hello: {i}!"))
+            notifications.NotifyUserPayload(0, f"Hello: {i}!", utilities.Just(soon)))
 
     for notification in notifications_to_add:
         add_result = execute_request(notifications.NotifyUser(notification))
@@ -72,6 +76,7 @@ def test():
             add_result, notifications.NotificationAdded)
         assert add_result.data.userId == notification.id
         assert add_result.data.notification.message == notification.message
+        assert add_result.data.notification.expiration == utilities.Just(soon)
 
     clear_for_user_zero = execute_request(notifications.ClearNotifications(0))
     assert_successful(clear_for_user_zero, notifications.NotificationsCleared)

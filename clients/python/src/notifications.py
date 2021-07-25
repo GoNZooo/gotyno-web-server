@@ -10,17 +10,18 @@ from . import utilities
 class NotifyUserPayload:
     id: int
     message: str
+    expiration: utilities.Maybe[int]
 
     @staticmethod
     def validate(value: validation.Unknown) -> validation.ValidationResult['NotifyUserPayload']:
-        return validation.validate_interface(value, {'id': validation.validate_int, 'message': validation.validate_string}, NotifyUserPayload)
+        return validation.validate_interface(value, {'id': validation.validate_int, 'message': validation.validate_string, 'expiration': utilities.Maybe.validate(validation.validate_bigint)}, NotifyUserPayload)
 
     @staticmethod
     def decode(string: typing.Union[str, bytes]) -> validation.ValidationResult['NotifyUserPayload']:
         return validation.validate_from_string(string, NotifyUserPayload.validate)
 
     def to_json(self) -> typing.Dict[str, typing.Any]:
-        return {'id': self.id, 'message': self.message}
+        return {'id': self.id, 'message': self.message, 'expiration': self.expiration.to_json(encoding.bigint_to_json)}
 
     def encode(self) -> str:
         return json.dumps(self.to_json())
@@ -30,17 +31,18 @@ class Notification:
     id: int
     message: str
     seen: bool
+    expiration: utilities.Maybe[int]
 
     @staticmethod
     def validate(value: validation.Unknown) -> validation.ValidationResult['Notification']:
-        return validation.validate_interface(value, {'id': validation.validate_int, 'message': validation.validate_string, 'seen': validation.validate_bool}, Notification)
+        return validation.validate_interface(value, {'id': validation.validate_int, 'message': validation.validate_string, 'seen': validation.validate_bool, 'expiration': utilities.Maybe.validate(validation.validate_bigint)}, Notification)
 
     @staticmethod
     def decode(string: typing.Union[str, bytes]) -> validation.ValidationResult['Notification']:
         return validation.validate_from_string(string, Notification.validate)
 
     def to_json(self) -> typing.Dict[str, typing.Any]:
-        return {'id': self.id, 'message': self.message, 'seen': self.seen}
+        return {'id': self.id, 'message': self.message, 'seen': self.seen, 'expiration': self.expiration.to_json(encoding.bigint_to_json)}
 
     def encode(self) -> str:
         return json.dumps(self.to_json())
