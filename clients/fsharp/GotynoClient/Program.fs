@@ -4,6 +4,8 @@ open Notifications
 open FsHttp
 open FsHttp.DslCE
 open Thoth.Json.Net
+open Utilities
+open System
 
 let url = "http://localhost:8080/notification"
 
@@ -40,7 +42,7 @@ let main argv =
     assert notificationsForUserZero.IsEmpty
 
     let addedNotification =
-        executeCommand (NotifyUser {Id = 0u; Message = "Hello"})
+        executeCommand (NotifyUser {Id = 0u; Message = "Hello"; Expiration = Nothing})
           (function
           | NotificationAdded n -> n
           | r -> failwith ("Unexpected response: " + r.ToString()))
@@ -57,8 +59,13 @@ let main argv =
     assert (not notificationsForUserZero.[0].Seen)
 
     let oneToFive = seq {1..5}
+    let soon = uint64((DateTime.UtcNow + TimeSpan.FromSeconds (10.0)).Ticks)
     let notificationsToAdd =
-          oneToFive |> Seq.map (fun i -> {Id = 0u; Message = sprintf "Hello %d" i}) |> Seq.toList
+          oneToFive
+          |> Seq.map (fun i ->
+            {Id = 0u; Message = sprintf "Hello %d" i; Expiration = Just soon}
+          )
+          |> Seq.toList
     executeCommand ClearAllNotifications
       (function
       | AllNotificationsCleared -> ()
@@ -78,6 +85,14 @@ let main argv =
           | Notifications notifications -> notifications
           | r -> failwith ("Unexpected response: " + r.ToString()))
     assert (notificationsForUserZero.Length = 5)
+    assert (
+      List.forall ( fun n ->
+        match n.Expiration with
+        | Just expiration -> expiration = soon
+        | _ -> failwith "Expected expiration to be `Just`"
+      )
+                  notificationsForUserZero
+    )
 
     for id in idsToRemove do
         executeCommand (RemoveNotification {UserId = 0u; Id = id})

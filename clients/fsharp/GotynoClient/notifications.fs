@@ -6,6 +6,7 @@ type NotifyUserPayload =
     {
         Id: uint32
         Message: string
+        Expiration: Utilities.Maybe<uint64>
     }
 
     static member Decoder: Decoder<NotifyUserPayload> =
@@ -13,6 +14,7 @@ type NotifyUserPayload =
             {
                 Id = get.Required.Field "id" Decode.uint32
                 Message = get.Required.Field "message" Decode.string
+                Expiration = get.Required.Field "expiration" (Utilities.Maybe.Decoder Decode.uint64)
             }
         )
 
@@ -21,6 +23,7 @@ type NotifyUserPayload =
             [
                 "id", Encode.uint32 value.Id
                 "message", Encode.string value.Message
+                "expiration", (Utilities.Maybe.Encoder Encode.uint64) value.Expiration
             ]
 
 type Notification =
@@ -28,6 +31,7 @@ type Notification =
         Id: uint32
         Message: string
         Seen: bool
+        Expiration: Utilities.Maybe<uint64>
     }
 
     static member Decoder: Decoder<Notification> =
@@ -36,6 +40,7 @@ type Notification =
                 Id = get.Required.Field "id" Decode.uint32
                 Message = get.Required.Field "message" Decode.string
                 Seen = get.Required.Field "seen" Decode.bool
+                Expiration = get.Required.Field "expiration" (Utilities.Maybe.Decoder Decode.uint64)
             }
         )
 
@@ -45,6 +50,7 @@ type Notification =
                 "id", Encode.uint32 value.Id
                 "message", Encode.string value.Message
                 "seen", Encode.bool value.Seen
+                "expiration", (Utilities.Maybe.Encoder Encode.uint64) value.Expiration
             ]
 
 type NotificationAddedPayload =
