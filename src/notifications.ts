@@ -5,28 +5,30 @@ import * as utilities from "./utilities";
 export type NotifyUserPayload = {
     id: number;
     message: string;
+    expiration: utilities.Maybe<bigint>;
 };
 
 export function isNotifyUserPayload(value: unknown): value is NotifyUserPayload {
-    return svt.isInterface<NotifyUserPayload>(value, {id: svt.isNumber, message: svt.isString});
+    return svt.isInterface<NotifyUserPayload>(value, {id: svt.isNumber, message: svt.isString, expiration: utilities.isMaybe(svt.isBigInt)});
 }
 
 export function validateNotifyUserPayload(value: unknown): svt.ValidationResult<NotifyUserPayload> {
-    return svt.validate<NotifyUserPayload>(value, {id: svt.validateNumber, message: svt.validateString});
+    return svt.validate<NotifyUserPayload>(value, {id: svt.validateNumber, message: svt.validateString, expiration: utilities.validateMaybe(svt.validateBigInt)});
 }
 
 export type Notification = {
     id: number;
     message: string;
     seen: boolean;
+    expiration: utilities.Maybe<bigint>;
 };
 
 export function isNotification(value: unknown): value is Notification {
-    return svt.isInterface<Notification>(value, {id: svt.isNumber, message: svt.isString, seen: svt.isBoolean});
+    return svt.isInterface<Notification>(value, {id: svt.isNumber, message: svt.isString, seen: svt.isBoolean, expiration: utilities.isMaybe(svt.isBigInt)});
 }
 
 export function validateNotification(value: unknown): svt.ValidationResult<Notification> {
-    return svt.validate<Notification>(value, {id: svt.validateNumber, message: svt.validateString, seen: svt.validateBoolean});
+    return svt.validate<Notification>(value, {id: svt.validateNumber, message: svt.validateString, seen: svt.validateBoolean, expiration: utilities.validateMaybe(svt.validateBigInt)});
 }
 
 export type NotificationAddedPayload = {

@@ -1068,10 +1068,10 @@ signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
-simple-validation-tools@^1.4.5:
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/simple-validation-tools/-/simple-validation-tools-1.4.5.tgz#6708e2c05da49d0818f432f52a52166c5c677f56"
-  integrity sha512-WscoBxtwsAYsufg1DN1hyV6QGN0ciussll8wf7OT+PFOiAwdO33B4aO3pI2Ej9lcQnravXRq8hj+K1jqtusKdQ==
+simple-validation-tools@^1.4.12:
+  version "1.4.12"
+  resolved "https://registry.yarnpkg.com/simple-validation-tools/-/simple-validation-tools-1.4.12.tgz#f8246395b2e719e3d33f11785dee9404e5739ea7"
+  integrity sha512-oOJYf0DmdNc87tm+lyw8fax30A/RlAEDlAX9cOc3bOCP/lXbBpk/xm6W9tTLbiRT/FqpuPCy+lJN3zLk5M4WUQ==
 
 source-map-support@^0.5.17:
   version "0.5.19"

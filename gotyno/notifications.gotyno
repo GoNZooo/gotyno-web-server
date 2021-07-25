@@ -3,12 +3,14 @@ import utilities
 struct NotifyUserPayload {
     id: U32
     message: String
+    expiration: utilities.Maybe<U64>
 }
 
 struct Notification {
     id: U32
     message: String
     seen: Boolean
+    expiration: utilities.Maybe<U64>
 }
 
 struct NotificationAddedPayload {
